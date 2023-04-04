@@ -76,7 +76,7 @@ CREATE TABLE `pulses` (
 
 DROP TABLE IF EXISTS `course_student`;
 
-CREATE TABLE `course_student` (
+CREATE TABLE `user_role` (
   `user_id` int NOT NULL,
   `role_id` int NOT NULL,
   
