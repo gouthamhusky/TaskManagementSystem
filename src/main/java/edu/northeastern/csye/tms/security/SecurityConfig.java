@@ -1,6 +1,5 @@
 package edu.northeastern.csye.tms.security;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -64,7 +63,8 @@ public class SecurityConfig {
                 + "FROM users u\n"
                 + "JOIN user_role ur ON u.user_id = ur.user_id\n"
                 + "JOIN roles r ON r.role_id = ur.role_id\n"
-                + "WHERE u.username=?");
+                + "WHERE u.username=?"
+        );
 
         return jdbcUserDetailsManager;
     }
