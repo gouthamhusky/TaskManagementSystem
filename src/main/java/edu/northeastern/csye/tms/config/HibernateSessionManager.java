@@ -11,13 +11,13 @@ import java.util.Objects;
 
 @Component
 @Slf4j
-public class HibernateSessionProvider {
+public class HibernateSessionManager {
 
     private static final ThreadLocal<Session> sessionThread = new ThreadLocal<>();
     private final SessionFactory sessionFactory;
 
     @Autowired
-    public HibernateSessionProvider(EntityManagerFactory entityManagerFactory) {
+    public HibernateSessionManager(EntityManagerFactory entityManagerFactory) {
         Objects.requireNonNull(entityManagerFactory, "entityManagerFactory must not be null");
         this.sessionFactory = entityManagerFactory.unwrap(SessionFactory.class);
     }

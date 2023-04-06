@@ -1,8 +1,9 @@
 package edu.northeastern.csye.tms.dao;
 
-import edu.northeastern.csye.tms.config.HibernateSessionProvider;
+import edu.northeastern.csye.tms.config.HibernateSessionManager;
 import edu.northeastern.csye.tms.entity.Task;
 import jakarta.persistence.TypedQuery;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -11,42 +12,45 @@ import java.util.List;
 @Repository
 public class TaskDAO implements GenericDAO<Task>{
 
-    private HibernateSessionProvider sessionProvider;
+    private final HibernateSessionManager sessionManager;
 
     @Autowired
-    public TaskDAO(HibernateSessionProvider sessionProvider) {
-        this.sessionProvider = sessionProvider;
+    public TaskDAO(HibernateSessionManager sessionManager) {
+        this.sessionManager = sessionManager;
     }
 
     @Override
-    public void save(Task task) {
-        sessionProvider.getSession().persist(task);
-        sessionProvider.close();
+    @Transactional
+    public void persist(Task task) {
+        sessionManager.getSession().persist(task);
+        sessionManager.close();
     }
 
     @Override
+    @Transactional
     public void update(Task task) {
-        sessionProvider.getSession().merge(task);
-        sessionProvider.close();
+        sessionManager.getSession().merge(task);
+        sessionManager.close();
     }
 
     @Override
+    @Transactional
     public void delete(Task task) {
-        sessionProvider.getSession().remove(task);
-        sessionProvider.close();
+        sessionManager.getSession().remove(task);
+        sessionManager.close();
     }
 
     @Override
-    public Task getById(Integer id) {
-        Task task = sessionProvider.getSession().get(Task.class, id);
-        sessionProvider.close();
+    public Task get(Integer id) {
+        Task task = sessionManager.getSession().get(Task.class, id);
+        sessionManager.close();
         return task;
     }
 
     public List<Task> getTasks(){
-        TypedQuery<Task> query = sessionProvider.getSession().createQuery("FROM tasks", Task.class);
+        TypedQuery<Task> query = sessionManager.getSession().createQuery("FROM tasks", Task.class);
         List<Task> tasks = query.getResultList();
-        sessionProvider.close();
+        sessionManager.close();
         return tasks;
     }
 }

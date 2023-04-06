@@ -1,6 +1,6 @@
 package edu.northeastern.csye.tms.dao;
 
-import edu.northeastern.csye.tms.config.HibernateSessionProvider;
+import edu.northeastern.csye.tms.config.HibernateSessionManager;
 import edu.northeastern.csye.tms.entity.Role;
 import jakarta.persistence.TypedQuery;
 import jakarta.transaction.Transactional;
@@ -12,43 +12,45 @@ import java.util.List;
 @Repository
 public class RoleDAO implements GenericDAO<Role>{
 
-    private HibernateSessionProvider sessionProvider;
+    private final HibernateSessionManager sessionManager;
 
     @Autowired
-    public RoleDAO(HibernateSessionProvider sessionProvider) {
-        this.sessionProvider = sessionProvider;
+    public RoleDAO(HibernateSessionManager sessionManager) {
+        this.sessionManager = sessionManager;
     }
 
     @Override
     @Transactional
-    public void save(Role role) {
-        sessionProvider.getSession().save(role);
-        sessionProvider.close();
+    public void persist(Role role) {
+        sessionManager.getSession().save(role);
+        sessionManager.close();
     }
 
     @Override
+    @Transactional
     public void update(Role role) {
-        sessionProvider.getSession().merge(role);
-        sessionProvider.close();
+        sessionManager.getSession().merge(role);
+        sessionManager.close();
     }
 
     @Override
+    @Transactional
     public void delete(Role role) {
-        sessionProvider.getSession().remove(role);
-        sessionProvider.close();
+        sessionManager.getSession().remove(role);
+        sessionManager.close();
     }
 
     @Override
-    public Role getById(Integer id) {
-        Role role = sessionProvider.getSession().find(Role.class, id);
-        sessionProvider.close();
+    public Role get(Integer id) {
+        Role role = sessionManager.getSession().find(Role.class, id);
+        sessionManager.close();
         return role;
     }
 
     public List<Role> getRoles(){
-        TypedQuery<Role> query = sessionProvider.getSession().createQuery("FROM roles",  Role.class);
+        TypedQuery<Role> query = sessionManager.getSession().createQuery("FROM roles",  Role.class);
         List<Role> results = query.getResultList();
-        sessionProvider.close();
+        sessionManager.close();
         return results;
     }
 }
