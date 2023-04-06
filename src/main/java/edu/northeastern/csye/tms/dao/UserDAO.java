@@ -10,7 +10,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public abstract class UserDAO implements GenericDAO<User> {
+public class UserDAO implements GenericDAO<User> {
 
     private final HibernateSessionManager sessionManager;
 
