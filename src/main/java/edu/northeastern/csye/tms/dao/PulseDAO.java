@@ -48,7 +48,7 @@ public class PulseDAO implements GenericDAO<Pulse>{
     }
 
     public List<Pulse> getPulses(){
-        TypedQuery<Pulse> query = sessionManager.getSession().createQuery("FROM pulses",  Pulse.class);
+        TypedQuery<Pulse> query = sessionManager.getSession().createQuery("FROM Pulse",  Pulse.class);
         List<Pulse> results = query.getResultList();
         sessionManager.close();
         return results;

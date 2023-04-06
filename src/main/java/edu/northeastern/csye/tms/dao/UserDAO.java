@@ -48,7 +48,7 @@ public class UserDAO implements GenericDAO<User> {
     }
 
     public List<User> getUsers(){
-        TypedQuery<User> query = sessionManager.getSession().createQuery("FROM users", User.class);
+        TypedQuery<User> query = sessionManager.getSession().createQuery("FROM User", User.class);
         List<User> users = query.getResultList();
         sessionManager.close();
         return users;

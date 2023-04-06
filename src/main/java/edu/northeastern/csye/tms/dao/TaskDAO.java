@@ -48,7 +48,7 @@ public class TaskDAO implements GenericDAO<Task>{
     }
 
     public List<Task> getTasks(){
-        TypedQuery<Task> query = sessionManager.getSession().createQuery("FROM tasks", Task.class);
+        TypedQuery<Task> query = sessionManager.getSession().createQuery("FROM Task", Task.class);
         List<Task> tasks = query.getResultList();
         sessionManager.close();
         return tasks;

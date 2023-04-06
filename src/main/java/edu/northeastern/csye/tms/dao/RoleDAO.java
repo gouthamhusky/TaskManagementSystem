@@ -48,7 +48,7 @@ public class RoleDAO implements GenericDAO<Role>{
     }
 
     public List<Role> getRoles(){
-        TypedQuery<Role> query = sessionManager.getSession().createQuery("FROM roles",  Role.class);
+        TypedQuery<Role> query = sessionManager.getSession().createQuery("FROM Role",  Role.class);
         List<Role> results = query.getResultList();
         sessionManager.close();
         return results;
