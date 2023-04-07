@@ -5,7 +5,6 @@ import edu.northeastern.csye.tms.entity.Task;
 import edu.northeastern.csye.tms.service.TaskPulseService;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.ArrayList;
