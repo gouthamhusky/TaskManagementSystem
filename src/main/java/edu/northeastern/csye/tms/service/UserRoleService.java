@@ -13,7 +13,8 @@ import java.util.List;
 public class UserRoleService {
 
     private final UserDAO userDAO;
-    private final RoleDAO roleDAO;
+
+    public final RoleDAO roleDAO;
 
     @Autowired
     public UserRoleService(UserDAO userDAO, RoleDAO roleDAO) {
@@ -29,8 +30,8 @@ public class UserRoleService {
         roleDAO.update(role);
     }
 
-    public void deleteRole(Role role) {
-        roleDAO.delete(role);
+    public void deleteRole(Integer id) {
+        roleDAO.delete(id);
     }
 
     public List<Role> getRoles() {
@@ -49,8 +50,8 @@ public class UserRoleService {
         userDAO.update(user);
     }
 
-    public void deleteUser(User user) {
-        userDAO.delete(user);
+    public void deleteUser(Integer id) {
+        userDAO.delete(id);
     }
 
     public List<User> getUsers() {

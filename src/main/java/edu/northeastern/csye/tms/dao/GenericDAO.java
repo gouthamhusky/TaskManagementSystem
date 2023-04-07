@@ -5,7 +5,7 @@ public interface GenericDAO<T> {
 
     public void update(T entity);
 
-    public void delete(T entity);
+    public void delete(Integer id);
 
     public T get(Integer id);
 }

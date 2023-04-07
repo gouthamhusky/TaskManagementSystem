@@ -24,8 +24,7 @@ public class Pulse {
     @JoinColumn(name = "task_id")
     private Task task;
 
-    public Pulse(String comment, Task task) {
+    public Pulse(String comment) {
         this.comment = comment;
-        this.task = task;
     }
 }

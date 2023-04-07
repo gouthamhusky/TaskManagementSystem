@@ -29,8 +29,8 @@ public class TaskPulseService {
         taskDAO.update(task);
     }
 
-    public void deleteTask(Task task) {
-        taskDAO.delete(task);
+    public void deleteTask(Integer id) {
+        taskDAO.delete(id);
     }
 
     public List<Task> getTasks() {
@@ -49,8 +49,8 @@ public class TaskPulseService {
         pulseDAO.update(pulse);
     }
 
-    public void deletePulse(Pulse pulse) {
-        pulseDAO.delete(pulse);
+    public void deletePulse(Integer id) {
+        pulseDAO.delete(id);
     }
 
     public List<Pulse> getPulses() {
@@ -61,4 +61,3 @@ public class TaskPulseService {
         return pulseDAO.get(pulseId);
     }
 }
-

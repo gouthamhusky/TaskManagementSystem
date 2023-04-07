@@ -1,7 +1,8 @@
 package edu.northeastern.csye.tms.dao;
 
-import edu.northeastern.csye.tms.config.HibernateSessionManager;
 import edu.northeastern.csye.tms.entity.User;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.TypedQuery;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,45 +13,36 @@ import java.util.List;
 @Repository
 public class UserDAO implements GenericDAO<User> {
 
-    private final HibernateSessionManager sessionManager;
-
-    @Autowired
-    public UserDAO(HibernateSessionManager sessionManager) {
-        this.sessionManager = sessionManager;
-    }
+    @PersistenceContext
+    private EntityManager entityManager;
 
     @Override
     @Transactional
     public void persist(User user) {
-        sessionManager.getSession().persist(user);
-        sessionManager.close();
+        entityManager.persist(user);
     }
 
     @Override
     @Transactional
     public void update(User user) {
-        sessionManager.getSession().merge(user);
-        sessionManager.close();
+        entityManager.merge(user);
     }
 
     @Override
     @Transactional
-    public void delete(User user) {
-        sessionManager.getSession().remove(user);
-        sessionManager.close();
+    public void delete(Integer id) {
+        User user = entityManager.find(User.class, id);
+        entityManager.remove(user);
     }
 
     @Override
     public User get(Integer id) {
-        User result = sessionManager.getSession().get(User.class, id);
-        sessionManager.close();
-        return result;
+        return entityManager.find(User.class, id);
     }
 
     public List<User> getUsers(){
-        TypedQuery<User> query = sessionManager.getSession().createQuery("FROM User", User.class);
+        TypedQuery<User> query = entityManager.createQuery("FROM User", User.class);
         List<User> users = query.getResultList();
-        sessionManager.close();
         return users;
     }
 }

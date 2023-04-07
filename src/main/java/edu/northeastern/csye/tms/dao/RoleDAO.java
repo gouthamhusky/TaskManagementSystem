@@ -1,7 +1,8 @@
 package edu.northeastern.csye.tms.dao;
 
-import edu.northeastern.csye.tms.config.HibernateSessionManager;
 import edu.northeastern.csye.tms.entity.Role;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.TypedQuery;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,45 +13,38 @@ import java.util.List;
 @Repository
 public class RoleDAO implements GenericDAO<Role>{
 
-    private final HibernateSessionManager sessionManager;
-
-    @Autowired
-    public RoleDAO(HibernateSessionManager sessionManager) {
-        this.sessionManager = sessionManager;
-    }
+    @PersistenceContext
+    private EntityManager entityManager;
 
     @Override
     @Transactional
     public void persist(Role role) {
-        sessionManager.getSession().save(role);
-        sessionManager.close();
+        entityManager.persist(role);
     }
 
     @Override
     @Transactional
     public void update(Role role) {
-        sessionManager.getSession().merge(role);
-        sessionManager.close();
+        entityManager.merge(role);
     }
 
     @Override
     @Transactional
-    public void delete(Role role) {
-        sessionManager.getSession().remove(role);
-        sessionManager.close();
+    public void delete(Integer id) {
+        Role role = entityManager.find(Role.class, id);
+        entityManager.remove(role);
     }
 
     @Override
+    @Transactional
     public Role get(Integer id) {
-        Role role = sessionManager.getSession().find(Role.class, id);
-        sessionManager.close();
+        Role role = entityManager.find(Role.class, id);
         return role;
     }
 
     public List<Role> getRoles(){
-        TypedQuery<Role> query = sessionManager.getSession().createQuery("FROM Role",  Role.class);
+        TypedQuery<Role> query = entityManager.createQuery("FROM Role",  Role.class);
         List<Role> results = query.getResultList();
-        sessionManager.close();
         return results;
     }
 }

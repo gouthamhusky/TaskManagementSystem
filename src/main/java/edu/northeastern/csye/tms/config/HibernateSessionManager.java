@@ -1,10 +1,13 @@
 package edu.northeastern.csye.tms.config;
 
+import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
+import jakarta.persistence.PersistenceUnit;
 import lombok.extern.slf4j.Slf4j;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
 import java.util.Objects;
@@ -16,10 +19,13 @@ public class HibernateSessionManager {
     private static final ThreadLocal<Session> sessionThread = new ThreadLocal<>();
     private final SessionFactory sessionFactory;
 
+    private final EntityManager entityManager;
+    
     @Autowired
-    public HibernateSessionManager(EntityManagerFactory entityManagerFactory) {
-        Objects.requireNonNull(entityManagerFactory, "entityManagerFactory must not be null");
-        this.sessionFactory = entityManagerFactory.unwrap(SessionFactory.class);
+    public HibernateSessionManager(EntityManager entityManager) {
+        this.entityManager = entityManager;
+        Objects.requireNonNull(entityManager, "entityManager must not be null");
+        this.sessionFactory = entityManager.getEntityManagerFactory().unwrap(SessionFactory.class);
     }
 
     public Session getSession() {
