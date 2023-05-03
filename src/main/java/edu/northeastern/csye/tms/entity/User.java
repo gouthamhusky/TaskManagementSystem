@@ -1,6 +1,7 @@
 package edu.northeastern.csye.tms.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotEmpty;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -8,11 +9,16 @@ import lombok.Setter;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ This class represents a User entity, which stores information about details like username, password etc.
+ Passwords are encoded using the Bcrypt algorithm and store in a MySQL DB
+ @author Goutham K
+ */
 @Entity
 @Table(name = "users")
 @NoArgsConstructor
 @Getter @Setter
-public class User {
+public class User implements Marker {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -20,26 +26,31 @@ public class User {
     private int id;
 
     @Column(name = "firstname")
+    @NotEmpty
     private String firstName;
 
     @Column(name = "lastname")
+    @NotEmpty
     private String lastName;
 
     @Column(name = "username")
+    @NotEmpty
     private String userName;
 
+    @NotEmpty
     private String password;
 
     private int enabled;
 
     @OneToMany(mappedBy = "user",
-               cascade = CascadeType.ALL
+               cascade = CascadeType.ALL,
+               fetch = FetchType.EAGER
     )
     private List<Task> tasks;
 
     @ManyToMany(cascade = {
-            CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH
-    })
+            CascadeType.DETACH, CascadeType.PERSIST, CascadeType.REFRESH
+    },      fetch = FetchType.EAGER)
     @JoinTable(name = "user_role",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id")
