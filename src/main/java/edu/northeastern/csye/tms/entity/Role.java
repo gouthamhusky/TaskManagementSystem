@@ -8,11 +8,16 @@ import lombok.Setter;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ This class represents a Role entity, which stores information about roles that a user can have, for RBAC.
+ Values are USER, ADMIN
+ @author Goutham K
+ */
 @Entity
 @Table(name = "roles")
 @NoArgsConstructor
 @Getter @Setter
-public class Role {
+public class Role implements Marker {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -23,7 +28,7 @@ public class Role {
     private String roleName;
 
     @ManyToMany(cascade = {
-            CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH
+            CascadeType.DETACH, CascadeType.PERSIST, CascadeType.REFRESH
     })
     @JoinTable(name = "user_role",
             joinColumns = @JoinColumn(name = "role_id"),

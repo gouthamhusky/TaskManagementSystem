@@ -5,11 +5,15 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+/**
+ This class represents a Pulse entity, which stores information about a particular comment added to a Task.
+ @author Goutham K
+ */
 @Entity
 @Table(name = "pulses")
 @NoArgsConstructor
 @Getter @Setter
-public class Pulse {
+public class Pulse implements Marker {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -19,7 +23,7 @@ public class Pulse {
     private String comment;
 
     @ManyToOne(cascade = {
-            CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH
+            CascadeType.DETACH, CascadeType.PERSIST, CascadeType.REFRESH
     })
     @JoinColumn(name = "task_id")
     private Task task;
